@@ -3,20 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team JavaScript Calculator</title>
+    <title>Team JavaScript Calculator - Scientific Mode</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="calculator-container">
         <header class="calculator-header">
-            <h2>JavaScript Calculator</h2>
-            <span class="badge">Team Project</span>
+            <div>
+                <h2>JavaScript Calculator</h2>
+                <span class="branch-tag">Branch: feature/scientific-mode</span>
+            </div>
+            <button type="button" id="toggle-scientific" class="btn-toggle">Scientific: OFF</button>
         </header>
 
         <div class="calculator">
             <div class="display">
                 <div class="previous-operand" data-previous-operand></div>
                 <div class="current-operand" data-current-operand>0</div>
+            </div>
+
+            <!-- Scientific Mode Keypad (Collapsible) -->
+            <div class="scientific-grid hidden" id="scientific-keypad">
+                <button type="button" class="btn btn-sci" data-sci="sqrt">√x</button>
+                <button type="button" class="btn btn-sci" data-sci="square">x²</button>
+                <button type="button" class="btn btn-sci" data-sci="reciprocal">1/x</button>
+                <button type="button" class="btn btn-sci" data-sci="pi">π</button>
+                <button type="button" class="btn btn-sci" data-sci="e">e</button>
+                <button type="button" class="btn btn-sci" data-sci="log">ln</button>
             </div>
 
             <div class="buttons-grid">
@@ -48,7 +61,7 @@
         </div>
 
         <footer class="calculator-footer">
-            <p>Built with HTML5, CSS3, & Modern JavaScript</p>
+            <p>Built with HTML5, CSS3, & Modern JavaScript (Scientific Mode)</p>
         </footer>
     </div>
 
