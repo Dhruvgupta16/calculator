@@ -8,11 +8,27 @@ body {
     margin: 0;
 }
 
+body.dark {
+    background-color: #1a1a1a;
+}
+
 .calc {
     background: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+body.dark .calc {
+    background: #2d2d2d;
+    box-shadow: 0 0 10px rgba(0,0,0,0.6);
+}
+
+.theme-btn {
+    width: 100%;
+    margin-bottom: 10px;
+    height: 35px;
+    font-size: 14px;
 }
 
 #display {
@@ -23,6 +39,12 @@ body {
     margin-bottom: 10px;
     padding: 5px;
     box-sizing: border-box;
+}
+
+body.dark #display {
+    background: #444;
+    color: white;
+    border: 1px solid #666;
 }
 
 .buttons {
@@ -42,6 +64,16 @@ button {
 
 button:hover {
     background: #d0d0d0;
+}
+
+body.dark button {
+    background: #555;
+    color: white;
+    border: 1px solid #666;
+}
+
+body.dark button:hover {
+    background: #666;
 }
 
 .equal {

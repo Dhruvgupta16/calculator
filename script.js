@@ -19,3 +19,7 @@ function calculate() {
         display.value = 'Error';
     }
 }
+
+function toggleDark() {
+    document.body.classList.toggle('dark');
+}
