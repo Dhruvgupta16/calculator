@@ -1,4 +1,4 @@
-# This function adds two numbers
+# This function the adds two numbers
 def add(x, y):
     return x + y
 
