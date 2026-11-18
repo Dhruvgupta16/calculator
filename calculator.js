@@ -1,7 +1,6 @@
 /**
- * Team Project - Basic JavaScript Calculator Logic
- * Core Logic: Implemented by Team Member 3
- * Keyboard & Event Enhancements: Implemented by Team Member 4
+ * Team Project - JavaScript Calculator with Scientific Functions
+ * Branch: feature/scientific-mode
  */
 
 class Calculator {
@@ -83,7 +82,6 @@ class Calculator {
                 return;
         }
 
-        // Round to avoid floating point precision issues
         this.currentOperand = Math.round((computation + Number.EPSILON) * 100000000) / 100000000;
         this.currentOperand = this.currentOperand.toString();
         this.operation = undefined;
@@ -101,6 +99,48 @@ class Calculator {
         const current = parseFloat(this.currentOperand);
         if (isNaN(current) || current === 0) return;
         this.currentOperand = (-current).toString();
+    }
+
+    // --- Scientific Functions (Branch: feature/scientific-mode) ---
+    applyScientific(func) {
+        const current = parseFloat(this.currentOperand);
+
+        switch (func) {
+            case 'sqrt':
+                if (current < 0) {
+                    this.currentOperand = 'Error';
+                } else {
+                    this.currentOperand = Math.sqrt(current).toString();
+                }
+                break;
+            case 'square':
+                this.currentOperand = Math.pow(current, 2).toString();
+                break;
+            case 'reciprocal':
+                if (current === 0) {
+                    this.currentOperand = 'Error';
+                } else {
+                    this.currentOperand = (1 / current).toString();
+                }
+                break;
+            case 'pi':
+                this.currentOperand = Math.PI.toString();
+                break;
+            case 'e':
+                this.currentOperand = Math.E.toString();
+                break;
+            case 'log':
+                if (current <= 0) {
+                    this.currentOperand = 'Error';
+                } else {
+                    this.currentOperand = Math.log(current).toString();
+                }
+                break;
+            default:
+                return;
+        }
+
+        this.readyToReset = true;
     }
 
     getDisplayNumber(number) {
@@ -140,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentOperandElement = document.querySelector('[data-current-operand]');
     const calculator = new Calculator(previousOperandElement, currentOperandElement);
 
-    // Number button click listeners
+    // Number button listeners
     document.querySelectorAll('[data-number]').forEach(button => {
         button.addEventListener('click', () => {
             calculator.appendNumber(button.getAttribute('data-number'));
@@ -148,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Operator button click listeners
+    // Operator button listeners
     document.querySelectorAll('[data-operation]').forEach(button => {
         button.addEventListener('click', () => {
             calculator.chooseOperation(button.getAttribute('data-operation'));
@@ -156,13 +196,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Action button click listeners
+    // Action button listeners
     document.querySelectorAll('[data-action]').forEach(button => {
         button.addEventListener('click', () => {
             const action = button.getAttribute('data-action');
             handleAction(action);
         });
     });
+
+    // Scientific button listeners
+    document.querySelectorAll('[data-sci]').forEach(button => {
+        button.addEventListener('click', () => {
+            const func = button.getAttribute('data-sci');
+            calculator.applyScientific(func);
+            calculator.updateDisplay();
+        });
+    });
+
+    // Toggle Scientific Keypad
+    const toggleBtn = document.getElementById('toggle-scientific');
+    const sciKeypad = document.getElementById('scientific-keypad');
+    if (toggleBtn && sciKeypad) {
+        toggleBtn.addEventListener('click', () => {
+            sciKeypad.classList.toggle('hidden');
+            const isHidden = sciKeypad.classList.contains('hidden');
+            toggleBtn.textContent = isHidden ? 'Scientific: OFF' : 'Scientific: ON';
+        });
+    }
 
     function handleAction(action) {
         switch (action) {
@@ -185,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
         calculator.updateDisplay();
     }
 
-    // Keyboard support - Added by Team Member 4
+    // Keyboard support
     window.addEventListener('keydown', (e) => {
         let triggerButton = null;
 
@@ -225,7 +285,6 @@ document.addEventListener('DOMContentLoaded', () => {
             triggerButton = document.querySelector(`[data-action="percent"]`);
         }
 
-        // Visual press animation for keyboard interactions
         if (triggerButton) {
             triggerButton.classList.add('active');
             setTimeout(() => triggerButton.classList.remove('active'), 120);
