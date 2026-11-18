@@ -1,6 +1,7 @@
 /**
  * Team Project - Basic JavaScript Calculator Logic
- * Implemented by Team Member 3
+ * Core Logic: Implemented by Team Member 3
+ * Keyboard & Event Enhancements: Implemented by Team Member 4
  */
 
 class Calculator {
@@ -139,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentOperandElement = document.querySelector('[data-current-operand]');
     const calculator = new Calculator(previousOperandElement, currentOperandElement);
 
-    // Number button listeners
+    // Number button click listeners
     document.querySelectorAll('[data-number]').forEach(button => {
         button.addEventListener('click', () => {
             calculator.appendNumber(button.getAttribute('data-number'));
@@ -147,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Operator button listeners
+    // Operator button click listeners
     document.querySelectorAll('[data-operation]').forEach(button => {
         button.addEventListener('click', () => {
             calculator.chooseOperation(button.getAttribute('data-operation'));
@@ -155,29 +156,80 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Action button listeners
+    // Action button click listeners
     document.querySelectorAll('[data-action]').forEach(button => {
         button.addEventListener('click', () => {
             const action = button.getAttribute('data-action');
-            switch (action) {
-                case 'clear':
-                    calculator.clear();
-                    break;
-                case 'delete':
-                    calculator.delete();
-                    break;
-                case 'equals':
-                    calculator.compute();
-                    break;
-                case 'percent':
-                    calculator.applyPercent();
-                    break;
-                case 'toggle-sign':
-                    calculator.toggleSign();
-                    break;
-            }
-            calculator.updateDisplay();
+            handleAction(action);
         });
+    });
+
+    function handleAction(action) {
+        switch (action) {
+            case 'clear':
+                calculator.clear();
+                break;
+            case 'delete':
+                calculator.delete();
+                break;
+            case 'equals':
+                calculator.compute();
+                break;
+            case 'percent':
+                calculator.applyPercent();
+                break;
+            case 'toggle-sign':
+                calculator.toggleSign();
+                break;
+        }
+        calculator.updateDisplay();
+    }
+
+    // Keyboard support - Added by Team Member 4
+    window.addEventListener('keydown', (e) => {
+        let triggerButton = null;
+
+        if ((e.key >= '0' && e.key <= '9') || e.key === '.') {
+            calculator.appendNumber(e.key);
+            calculator.updateDisplay();
+            triggerButton = document.querySelector(`[data-number="${e.key}"]`);
+        } else if (e.key === '+') {
+            calculator.chooseOperation('+');
+            calculator.updateDisplay();
+            triggerButton = document.querySelector(`[data-operation="+"]`);
+        } else if (e.key === '-') {
+            calculator.chooseOperation('−');
+            calculator.updateDisplay();
+            triggerButton = document.querySelector(`[data-operation="−"]`);
+        } else if (e.key === '*') {
+            calculator.chooseOperation('×');
+            calculator.updateDisplay();
+            triggerButton = document.querySelector(`[data-operation="×"]`);
+        } else if (e.key === '/') {
+            e.preventDefault();
+            calculator.chooseOperation('÷');
+            calculator.updateDisplay();
+            triggerButton = document.querySelector(`[data-operation="÷"]`);
+        } else if (e.key === 'Enter' || e.key === '=') {
+            e.preventDefault();
+            handleAction('equals');
+            triggerButton = document.querySelector(`[data-action="equals"]`);
+        } else if (e.key === 'Backspace') {
+            handleAction('delete');
+            triggerButton = document.querySelector(`[data-action="delete"]`);
+        } else if (e.key === 'Escape') {
+            handleAction('clear');
+            triggerButton = document.querySelector(`[data-action="clear"]`);
+        } else if (e.key === '%') {
+            handleAction('percent');
+            triggerButton = document.querySelector(`[data-action="percent"]`);
+        }
+
+        // Visual press animation for keyboard interactions
+        if (triggerButton) {
+            triggerButton.classList.add('active');
+            setTimeout(() => triggerButton.classList.remove('active'), 120);
+        }
     });
 
     window.calculatorInstance = calculator;
