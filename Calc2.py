@@ -11,6 +11,8 @@ print("2.Subtract")
 print("3.Multiply")
 print("4.Divide")
 
+
+#while this is true, run the below code
 while True:
     # take input from the user
     choice = input("Enter choice(1/2/3/4): ")
@@ -41,5 +43,6 @@ while True:
         next_calculation = input("Let's do next calculation? (yes/no): ")
         if next_calculation == "no":
           break
+    # else run this code here        
     else:
         print("Invalid Input")
